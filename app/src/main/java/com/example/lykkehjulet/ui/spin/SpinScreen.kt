@@ -36,7 +36,7 @@ fun SpinScreen(
                     // show letter if correct
                     // enable spinning again
 
-                    spinViewModel.changePoints((Math.random() * 100).toInt())
+                    spinViewModel.selectedPoints((Math.random()*100).toInt())
                     spinViewModel.openPopup()
                 }
             )

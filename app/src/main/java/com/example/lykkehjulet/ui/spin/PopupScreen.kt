@@ -39,7 +39,7 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
 
                 Text(text = "...")
                 Spacer(modifier = Modifier.weight(1F))
-                Text(text = "You spun the wheel and got $points point. You may now guess a letter!")
+                Text(text = "You spun the wheel and got ${spinViewModel.selectedPoints.value} point. You may now guess a letter!")
                 Spacer(modifier = Modifier.weight(2F))
 
                 var guessedLetter by remember { mutableStateOf("") }
@@ -61,15 +61,13 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                                 spinViewModel.isLetterGuessed(guessedLetter.toCharArray()[0])
                         }
 
-                        //TODO why tf does it not disable the button???
-                        isButtonEnabled = guessedLetterIsChar && guessedLetterIsLetter && !guessedLetterIsAlreadyGuessed
+                        isButtonEnabled = guessedLetterIsChar && guessedLetterIsLetter
+                                    && !guessedLetterIsAlreadyGuessed
                     },
                     label = { Text(text = "Guessed letter") },
                     singleLine = true,
                     isError = !guessedLetterIsChar
                             || !guessedLetterIsLetter || guessedLetterIsAlreadyGuessed,
-
-
                     supportingText = {
                         if (!guessedLetterIsChar) {
                             Text(text = "Enter only a single character")
@@ -81,6 +79,7 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                             Text(text = "Enter a single character")
                         }
                     },
+                    //TODO add imePadding() variant?
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
 
@@ -88,10 +87,11 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
 
                 FilledTonalButton(
                     onClick = {
-
-                        //TODO determine if the letter was correct!
                         if (spinViewModel.isLetterCorrect(guessedLetter)) {
                             spinViewModel.revealLetter(guessedLetter.toCharArray()[0])
+                            spinViewModel.addPoints(spinViewModel.selectedPoints.value)
+                        } else {
+                            spinViewModel.decreaseLives()
                         }
                         spinViewModel.saveGuessedLetter(guessedLetter.toCharArray()[0])
                         spinViewModel.closePopup()

@@ -39,12 +39,16 @@ class SpinViewModel : ViewModel() {
     val alreadyGuessedLetters: MutableList<Char>
         get() = _alreadyGuessedLetters
 
+    private val _selectedPoints = mutableStateOf(0)
+    val selectedPoints: MutableState<Int>
+        get() = _selectedPoints
+
     //only these functions can modify the lives and points
     fun changePoints(points: Int) {
         _points.value = points
     }
 
-    fun decrementLives() {
+    fun decreaseLives() {
         _lives.value--
     }
 
@@ -91,5 +95,14 @@ class SpinViewModel : ViewModel() {
 
     fun saveGuessedLetter(guessedLetter: Char) {
         _alreadyGuessedLetters.add(guessedLetter.uppercaseChar())
+    }
+
+    fun selectedPoints(points: Int) {
+        _selectedPoints.value = points
+    }
+
+    fun addPoints(amount: Int) {
+        //TODO check if there are multiple letters
+        _points.value += amount
     }
 }
