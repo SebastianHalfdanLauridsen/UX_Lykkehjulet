@@ -32,7 +32,6 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
         ElevatedCard(modifier = Modifier.size(width = 378.dp, height = 511.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {
 
-
                 Text(text = "Spinning wheel!", fontSize = 20.sp)
                 Spacer(modifier = Modifier.size(5.dp))
 
@@ -44,19 +43,44 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                 Spacer(modifier = Modifier.weight(2F))
 
                 var guessedLetter by remember { mutableStateOf("") }
+                var guessedLetterIsChar by remember { mutableStateOf(false) }
+                var guessedLetterIsLetter by remember { mutableStateOf(false) }
+                var guessedLetterIsAlreadyGuessed by remember { mutableStateOf(false) }
+
                 var isButtonEnabled by remember { mutableStateOf(false) }
 
                 OutlinedTextField(
                     value = guessedLetter,
                     onValueChange = {
                         guessedLetter = it
-                        isButtonEnabled = //TODO check if letter has been guessed already
-                            !(guessedLetter.isEmpty() || guessedLetter.length > 1 || !(guessedLetter.all { it.isLetter() }))
+
+                        guessedLetterIsChar = guessedLetter.length == 1
+                        guessedLetterIsLetter = guessedLetter.all { it.isLetter() }
+                        if (guessedLetter.isNotEmpty()) {
+                            guessedLetterIsAlreadyGuessed =
+                                spinViewModel.isLetterGuessed(guessedLetter.toCharArray()[0])
+                        }
+
+                        //TODO why tf does it not disable the button???
+                        isButtonEnabled = guessedLetterIsChar && guessedLetterIsLetter && !guessedLetterIsAlreadyGuessed
                     },
                     label = { Text(text = "Guessed letter") },
                     singleLine = true,
-                    isError = (guessedLetter.isEmpty() || guessedLetter.length > 1 || (guessedLetter.all { !it.isLetter() })),
-                    supportingText = { Text("Only 1 letter required") /*TODO rework or reword*/ },
+                    isError = !guessedLetterIsChar
+                            || !guessedLetterIsLetter || guessedLetterIsAlreadyGuessed,
+
+
+                    supportingText = {
+                        if (!guessedLetterIsChar) {
+                            Text(text = "Enter only a single character")
+                        } else if (!guessedLetterIsLetter) {
+                            Text(text = "Character is not a letter")
+                        } else if (guessedLetterIsAlreadyGuessed) {
+                            Text("Letter is already guessed")
+                        } else {
+                            Text(text = "Enter a single character")
+                        }
+                    },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
 
@@ -69,6 +93,7 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                         if (spinViewModel.isLetterCorrect(guessedLetter)) {
                             spinViewModel.revealLetter(guessedLetter.toCharArray()[0])
                         }
+                        spinViewModel.saveGuessedLetter(guessedLetter.toCharArray()[0])
                         spinViewModel.closePopup()
                     },
                     enabled = isButtonEnabled,

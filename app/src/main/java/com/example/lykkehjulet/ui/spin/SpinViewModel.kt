@@ -74,12 +74,22 @@ class SpinViewModel : ViewModel() {
         //reveal letter if is the guessed letter
 
         _wordToGuess.value.withIndex().forEach { (i, letter) ->
-            if(letter == guessedLetter.uppercaseChar()) {
+            if (letter == guessedLetter.uppercaseChar()) {
                 // inspired by https://www.techiedelight.com/replace-character-specific-index-string-kotlin/
                 //replaces index with letter
-                _guessedWord.value = StringBuilder(_guessedWord.value).also { it.setCharAt(i, letter)}.toString()
+                _guessedWord.value =
+                    StringBuilder(_guessedWord.value).also { it.setCharAt(i, letter) }.toString()
+
 
             }
         }
+    }
+
+    fun isLetterGuessed(letter: Char): Boolean {
+        return letter.uppercaseChar() in _alreadyGuessedLetters
+    }
+
+    fun saveGuessedLetter(guessedLetter: Char) {
+        _alreadyGuessedLetters.add(guessedLetter.uppercaseChar())
     }
 }
