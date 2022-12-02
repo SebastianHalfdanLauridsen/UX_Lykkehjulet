@@ -58,7 +58,11 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
-                Word(spinViewModel.guessedWord.value)
+                if (spinViewModel.guessedWord.value.isEmpty()) {
+                    spinViewModel.fetchNewWord()
+                }
+
+                Word(spinViewModel.getGuessedWordCategory(), spinViewModel.guessedWord.value)
 
                 if (spinViewModel.controlPopup.value) {
                     SpinPopupScreen()
@@ -141,14 +145,18 @@ fun Counter(
 }
 
 /**
- * Stateless display [text] as the word to guess.
+ * Stateless function which displays [word] as the word to guess and its [category].
  */
 @Composable
-fun Word(text: String) {
+fun Word(category: String, word: String) {
+    Text(
+        text = category,
+        modifier = Modifier.padding(16.dp)
+    )
     OutlinedCard {
         //TODO use monospaced font to avoid Card resizing when guessing a correct letter
         Text(
-            text = text,
+            text = word,
             fontSize = 30.sp,
             modifier = Modifier.padding(16.dp)
         )
