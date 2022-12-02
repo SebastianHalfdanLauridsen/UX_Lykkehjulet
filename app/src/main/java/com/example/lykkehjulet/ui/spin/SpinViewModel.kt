@@ -44,10 +44,6 @@ class SpinViewModel : ViewModel() {
         get() = _selectedPoints
 
     //only these functions can modify the lives and points
-    fun changePoints(points: Int) {
-        _points.value = points
-    }
-
     fun decreaseLives() {
         _lives.value--
     }
@@ -73,18 +69,12 @@ class SpinViewModel : ViewModel() {
     }
 
     fun revealLetter(guessedLetter: Char) {
-        //for each letter in the actual word
-        println("hey")
-        //reveal letter if is the guessed letter
-
         _wordToGuess.value.withIndex().forEach { (i, letter) ->
             if (letter == guessedLetter.uppercaseChar()) {
                 // inspired by https://www.techiedelight.com/replace-character-specific-index-string-kotlin/
                 //replaces index with letter
                 _guessedWord.value =
                     StringBuilder(_guessedWord.value).also { it.setCharAt(i, letter) }.toString()
-
-
             }
         }
     }
@@ -97,7 +87,7 @@ class SpinViewModel : ViewModel() {
         _alreadyGuessedLetters.add(guessedLetter.uppercaseChar())
     }
 
-    fun selectedPoints(points: Int) {
+    fun setSelectedPoints(points: Int) {
         _selectedPoints.value = points
     }
 

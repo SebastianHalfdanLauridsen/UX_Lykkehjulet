@@ -29,7 +29,7 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
             //dismissOnClickOutside = false
         )
     ) {
-        ElevatedCard(modifier = Modifier.size(width = 378.dp, height = 511.dp)) {
+        ElevatedCard(modifier = Modifier.size(width = 378.dp, height = 480.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {
 
                 Text(text = "Spinning wheel!", fontSize = 20.sp)
@@ -39,7 +39,7 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
 
                 Text(text = "...")
                 Spacer(modifier = Modifier.weight(1F))
-                Text(text = "You spun the wheel and got ${spinViewModel.selectedPoints.value} point. You may now guess a letter!")
+                Text(text = "You spun the wheel and got ${spinViewModel.selectedPoints.value} points. You may now guess a letter!")
                 Spacer(modifier = Modifier.weight(2F))
 
                 var guessedLetter by remember { mutableStateOf("") }
