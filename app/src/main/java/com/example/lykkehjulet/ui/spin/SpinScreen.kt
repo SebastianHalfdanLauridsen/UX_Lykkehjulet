@@ -9,11 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.lykkehjulet.StatefulPointsCounter
+import com.example.lykkehjulet.data.field.fieldtypes.BankruptcyField
+import com.example.lykkehjulet.data.field.fieldtypes.PointsField
+import com.example.lykkehjulet.data.local.LocalFieldsDataProvider
 import com.example.lykkehjulet.ui.navigation.LykkeHjulFAB
 import com.example.lykkehjulet.ui.navigation.LykkeHjulTopBar
-import com.example.lykkehjulet.ui.spin.PopupSpinScreen
-import com.example.lykkehjulet.ui.spin.SpinViewModel
-import com.example.lykkehjulet.ui.spin.StatefulLivesCounter
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,8 +38,20 @@ fun SpinScreen(
                     // show letter if correct
                     // enable spinning again
 
-                    spinViewModel.selectedPoints((Math.random()*100).toInt())
-                    spinViewModel.openPopup()
+                    //TODO move out of SpinScreen
+                    //selects a random field
+                    val randomFieldId = Random.nextLong(LocalFieldsDataProvider.getSize().toLong())
+                    val selectedField = LocalFieldsDataProvider.getFieldById(randomFieldId)
+
+                    if(selectedField.type is BankruptcyField) {
+                        spinViewModel.resetPoints()
+                    } else {
+                        val pointsField = selectedField.type as PointsField
+                        spinViewModel.setSelectedPoints(pointsField.points)
+                        spinViewModel.openPopup()
+                    }
+
+
                 }
             )
         }
