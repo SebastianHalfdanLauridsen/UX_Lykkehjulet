@@ -19,10 +19,17 @@ import kotlin.random.Random
 @Composable
 fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
     Scaffold(
-        topBar = { LykkeHjulTopBar(onClick = {/* TODO */ }) },
+        topBar = {
+            LykkeHjulTopBar(
+                onClick = {
+                    spinViewModel.resetGame()
+                }
+            )
+        },
         floatingActionButton = {
             LykkeHjulFAB(
                 onClick = {
+                    //TODO change FAB to normal button as FAB cannot be disabled
                     //selects a random field
                     val randomFieldId = (0..LocalFieldsDataProvider.getSize()).random().toLong()
                     val selectedField = LocalFieldsDataProvider.getFieldById(randomFieldId)
