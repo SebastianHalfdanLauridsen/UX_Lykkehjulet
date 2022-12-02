@@ -20,7 +20,6 @@ fun SpinPopupScreen(spinViewModel: SpinViewModel = viewModel()) {
     Popup(
         alignment = Alignment.Center,
         offset = IntOffset(0, 1200),
-        onDismissRequest = { /*TODO popupControl = false*/ },
         properties = PopupProperties(
             focusable = true,
             //dismissOnBackPress = false,
@@ -55,13 +54,10 @@ fun SpinPopupScreen(spinViewModel: SpinViewModel = viewModel()) {
                             spinViewModel.revealLetter(guessedLetter)
                             spinViewModel.addPoints(spinViewModel.selectedPoints.value)
 
-                            println("Word comp: ${spinViewModel.guessedWord.value} | ${spinViewModel.wordToGuess.value}")
-
                             if (spinViewModel.isWordGuessed()) {
                                 //TODO announce win and restart game
                                 println("WINNER")
                             }
-
                         } else {
                             spinViewModel.decreaseLives()
 

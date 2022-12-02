@@ -19,44 +19,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             LykkehjuletTheme {
                 // A surface container using the 'background' color from the theme
-                Surface( //TODO maybe remove/move this surface?
+                Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     LykkeHjulApp()
-
-                    /*Scaffold(
-                        floatingActionButton = {
-                            FloatingActionButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                            }
-                        },
-                        topBar = {
-                            TopAppBar(
-                                title = {
-                                    Text(text = "Material 3 test")
-                                },
-                                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                    titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            )
-                        }
-                    ) { values ->
-                        LazyColumn(contentPadding = values) {
-                            items(20) {
-                                ImageCard(
-                                    title = "This is a title",
-                                    description = "This is a description below a title, the description should be concrete and descriptive, duh. But also not too long.",
-                                    modifier = Modifier.padding(16.dp)
-                                )
-                            }
-                        }
-                    }*/
                 }
             }
         }

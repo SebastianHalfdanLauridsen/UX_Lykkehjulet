@@ -24,7 +24,7 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
             LykkeHjulFAB(
                 onClick = {
                     //selects a random field
-                    val randomFieldId = Random.nextLong(LocalFieldsDataProvider.getSize().toLong())
+                    val randomFieldId = (0..LocalFieldsDataProvider.getSize()).random().toLong()
                     val selectedField = LocalFieldsDataProvider.getFieldById(randomFieldId)
 
                     if (selectedField.type is BankruptcyField) {
