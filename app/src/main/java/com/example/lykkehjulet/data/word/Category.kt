@@ -1,6 +1,11 @@
 package com.example.lykkehjulet.data.word
 
 enum class Category {
+    DEFAULT {
+        override fun toString(): String {
+            return "CATEGORY"
+        }
+    },
     ANIMAL {
         override fun toString(): String {
             return "Animal"

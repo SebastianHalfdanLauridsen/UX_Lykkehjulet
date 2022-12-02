@@ -3,6 +3,9 @@ package com.example.lykkehjulet.ui.spin
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.lykkehjulet.data.local.LocalWordsDataProvider
+import com.example.lykkehjulet.data.word.Category
+import com.example.lykkehjulet.data.word.Word
 
 /**
  * The ViewModel ensures that we save our data outside of composition
@@ -19,13 +22,20 @@ class SpinViewModel : ViewModel() {
     val lives: MutableState<Int>
         get() = _lives
 
-    private val _wordToGuess = mutableStateOf("JEFF")
-    val wordToGuess: MutableState<String>
-        get() = _wordToGuess
-
-    private val _guessedWord = mutableStateOf("****")
+    private val _guessedWord = mutableStateOf("")
     val guessedWord: MutableState<String>
         get() = _guessedWord
+
+    private val _wordToGuess =
+        mutableStateOf(
+            Word(
+                id = -1L,
+                category = Category.DEFAULT,
+                word = ""
+            )
+        )
+    val wordToGuess: MutableState<Word>
+        get() = _wordToGuess
 
     private val _controlPopup = mutableStateOf(false)
     val controlPopup: MutableState<Boolean>
