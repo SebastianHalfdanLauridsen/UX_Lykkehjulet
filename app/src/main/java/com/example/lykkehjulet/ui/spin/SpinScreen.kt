@@ -13,7 +13,6 @@ import com.example.lykkehjulet.data.field.fieldtypes.PointsField
 import com.example.lykkehjulet.data.local.LocalFieldsDataProvider
 import com.example.lykkehjulet.ui.navigation.LykkeHjulFAB
 import com.example.lykkehjulet.ui.navigation.LykkeHjulTopBar
-import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +36,7 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
 
                     if (selectedField.type is BankruptcyField) {
                         spinViewModel.resetPoints()
+                        spinViewModel.openBankruptcyDialog()
                     } else {
                         val pointsField = selectedField.type as PointsField
                         spinViewModel.setSelectedPoints(pointsField.points)
@@ -65,14 +65,28 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
 
                 Word(spinViewModel.getGuessedWordCategory(), spinViewModel.guessedWord.value)
 
-                if (spinViewModel.controlPopup.value) {
+
+                if (spinViewModel.bankruptcyDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { spinViewModel.closeBankruptcyDialog() },
+                        title = { Text(text = "Bankruptcy!") },
+                        text = { Text(text = "You landed on the bankruptcy field and lost all your money.") },
+                        confirmButton = {
+                            TextButton(
+                                onClick = { spinViewModel.closeBankruptcyDialog() })
+                            {
+                                Text(text = "Okay")
+                            }
+                        }
+                    )
+                } else if (spinViewModel.controlPopup.value) {
                     SpinPopupScreen()
                 }
 
                 if (spinViewModel.openEndDialog.value) {
                     if (spinViewModel.hasLost()) {
                         EndDialog(
-                            onDismissRequest = {spinViewModel.closeEndGameDialog()},
+                            onDismissRequest = { spinViewModel.closeEndGameDialog() },
                             title = "You lost!",
                             text = "The word was '${spinViewModel.wordToGuess.value.word}! You lost in ${spinViewModel.alreadyGuessedLetters.size} guesses.",
                             onConfirm = {

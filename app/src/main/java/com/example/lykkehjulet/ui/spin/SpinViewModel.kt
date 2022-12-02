@@ -62,6 +62,10 @@ class SpinViewModel : ViewModel() {
     val openEndDialog: MutableState<Boolean>
         get() = _openEndDialog
 
+    private val _bankruptcyDialog = mutableStateOf(false)
+    val bankruptcyDialog: MutableState<Boolean>
+        get() = _bankruptcyDialog
+
 
     //only these functions can modify the lives and points
     fun decreaseLives() {
@@ -184,6 +188,14 @@ class SpinViewModel : ViewModel() {
 
     fun getGuessedWordCategory(): String {
         return _wordToGuess.value.category.toString()
+    }
+
+    fun openBankruptcyDialog() {
+        _bankruptcyDialog.value = true
+    }
+
+    fun closeBankruptcyDialog() {
+        _bankruptcyDialog.value = false
     }
 
 }
