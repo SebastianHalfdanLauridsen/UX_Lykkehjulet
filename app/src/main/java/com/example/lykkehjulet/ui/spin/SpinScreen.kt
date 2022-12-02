@@ -24,7 +24,7 @@ fun SpinScreen(
     spinViewModel: SpinViewModel = viewModel()
 ) {
     Scaffold(
-        topBar = { LykkeHjulTopBar() },
+        topBar = { LykkeHjulTopBar(onClick = {/* TODO */ }) },
         floatingActionButton = {
             //TODO make game?
             LykkeHjulFAB(

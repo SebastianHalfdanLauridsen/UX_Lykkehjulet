@@ -2,28 +2,36 @@ package com.example.lykkehjulet.ui.navigation
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import com.example.lykkehjulet.util.ResetGameIcon
 import com.example.lykkehjulet.util.SpinWheelIcon
 
+/**
+ * Stateless top bar with button
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LykkeHjulTopBar() {
+fun LykkeHjulTopBar(onClick: () -> Unit) {
     TopAppBar(
         title = {
             Text(text = "LykkehjuletTitle")
         },
         actions = {
-            AssistChip(
-                onClick = { /* TODO points.value = 0 */ },
-                label = { Text(text = "new game") }
-            )
+            Button(
+                onClick = onClick
+            ) {
+                ResetGameIcon()
+            }
         }
     )
 }
 
+/**
+ * Stateless FAB
+ */
 @Composable
 fun LykkeHjulFAB(onClick: () -> Unit) {
     LargeFloatingActionButton(
-        onClick =  onClick
+        onClick = onClick
     ) {
         SpinWheelIcon()
     }
