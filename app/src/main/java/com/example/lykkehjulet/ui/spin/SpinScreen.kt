@@ -21,19 +21,8 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
     Scaffold(
         topBar = { LykkeHjulTopBar(onClick = {/* TODO */ }) },
         floatingActionButton = {
-            //TODO make game?
             LykkeHjulFAB(
                 onClick = {
-                    //TODO
-                    // disable ability to spin
-                    // get random amount of points
-                    // let user guess letter
-                    // check if letter is correct
-                    // alert user of correctness
-                    // show letter if correct
-                    // enable spinning again
-
-                    //TODO move out of SpinScreen
                     //selects a random field
                     val randomFieldId = Random.nextLong(LocalFieldsDataProvider.getSize().toLong())
                     val selectedField = LocalFieldsDataProvider.getFieldById(randomFieldId)
@@ -45,8 +34,6 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                         spinViewModel.setSelectedPoints(pointsField.points)
                         spinViewModel.openPopup()
                     }
-
-
                 }
             )
         }
