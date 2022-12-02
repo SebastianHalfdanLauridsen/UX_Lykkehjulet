@@ -57,7 +57,7 @@ fun SpinPopupScreen(spinViewModel: SpinViewModel = viewModel()) {
 
                             println("Word comp: ${spinViewModel.guessedWord.value} | ${spinViewModel.wordToGuess.value}")
 
-                            if(spinViewModel.isWordGuessed()) {
+                            if (spinViewModel.isWordGuessed()) {
                                 //TODO announce win and restart game
                                 println("WINNER")
                             }
@@ -65,7 +65,7 @@ fun SpinPopupScreen(spinViewModel: SpinViewModel = viewModel()) {
                         } else {
                             spinViewModel.decreaseLives()
 
-                            if(spinViewModel.lives.value == 0) {
+                            if (spinViewModel.lives.value == 0) {
                                 //TODO announce defeat and restart game
                                 println("LOSER")
                             }

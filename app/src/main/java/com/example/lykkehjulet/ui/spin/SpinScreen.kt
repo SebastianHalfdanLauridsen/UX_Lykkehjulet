@@ -1,15 +1,13 @@
 package com.example.lykkehjulet.ui.spin
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.lykkehjulet.StatefulPointsCounter
 import com.example.lykkehjulet.data.field.fieldtypes.BankruptcyField
 import com.example.lykkehjulet.data.field.fieldtypes.PointsField
 import com.example.lykkehjulet.data.local.LocalFieldsDataProvider
@@ -19,10 +17,7 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SpinScreen(
-    modifier: Modifier = Modifier,
-    spinViewModel: SpinViewModel = viewModel()
-) {
+fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
     Scaffold(
         topBar = { LykkeHjulTopBar(onClick = {/* TODO */ }) },
         floatingActionButton = {
@@ -43,7 +38,7 @@ fun SpinScreen(
                     val randomFieldId = Random.nextLong(LocalFieldsDataProvider.getSize().toLong())
                     val selectedField = LocalFieldsDataProvider.getFieldById(randomFieldId)
 
-                    if(selectedField.type is BankruptcyField) {
+                    if (selectedField.type is BankruptcyField) {
                         spinViewModel.resetPoints()
                     } else {
                         val pointsField = selectedField.type as PointsField
