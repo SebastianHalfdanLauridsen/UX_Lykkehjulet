@@ -1,4 +1,4 @@
-package com.example.lykkehjulet
+package com.example.lykkehjulet.ui.spin
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,7 +61,7 @@ fun SpinScreen(
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row() {
+                Row {
                     StatefulPointsCounter(points = spinViewModel.points)
                     Spacer(modifier = Modifier.weight(1f))
                     StatefulLivesCounter(lives = spinViewModel.lives)

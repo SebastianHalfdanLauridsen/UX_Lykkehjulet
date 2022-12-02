@@ -5,7 +5,7 @@ import com.example.lykkehjulet.data.word.Word
 
 object LocalWordsDataProvider {
 
-    val allWords = listOf(
+    private val allWords = listOf(
         Word(
             id = 1L,
             category = Category.ANIMAL,
