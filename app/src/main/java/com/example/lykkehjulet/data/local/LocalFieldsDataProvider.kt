@@ -126,4 +126,8 @@ object LocalFieldsDataProvider {
     fun getFieldById(id: Long): Field {
         return allWheelFields.first {it.id == id}
     }
+
+    fun getSize(): Int {
+        return allWheelFields.size
+    }
 }
