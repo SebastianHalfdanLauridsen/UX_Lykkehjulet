@@ -90,8 +90,21 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                         if (spinViewModel.isLetterCorrect(guessedLetter)) {
                             spinViewModel.revealLetter(guessedLetter.toCharArray()[0])
                             spinViewModel.addPoints(spinViewModel.selectedPoints.value)
+
+                            println("Word comp: ${spinViewModel.guessedWord.value} | ${spinViewModel.wordToGuess.value}")
+
+                            if(spinViewModel.isWordGuessed()) {
+                                //TODO announce win and restart game
+                                println("WINNER")
+                            }
+
                         } else {
                             spinViewModel.decreaseLives()
+
+                            if(spinViewModel.lives.value == 0) {
+                                //TODO announce defeat and restart game
+                                println("LOSER")
+                            }
                         }
                         spinViewModel.saveGuessedLetter(guessedLetter.toCharArray()[0])
                         spinViewModel.closePopup()

@@ -95,4 +95,12 @@ class SpinViewModel : ViewModel() {
         //TODO check if there are multiple letters
         _points.value += amount
     }
+
+    fun resetPoints() {
+        _points.value = 0
+    }
+
+    fun isWordGuessed(): Boolean {
+        return _wordToGuess.value == _guessedWord.value
+    }
 }
