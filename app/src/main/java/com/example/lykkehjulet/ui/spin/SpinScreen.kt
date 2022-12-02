@@ -31,7 +31,8 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                 onClick = {
                     //TODO change FAB to normal button as FAB cannot be disabled
                     //selects a random field
-                    val randomFieldId = (0..LocalFieldsDataProvider.getSize()).random().toLong()
+                    val randomFieldId =
+                        (0 until LocalFieldsDataProvider.getSize()).random().toLong()
                     val selectedField = LocalFieldsDataProvider.getFieldById(randomFieldId)
 
                     if (selectedField.type is BankruptcyField) {
