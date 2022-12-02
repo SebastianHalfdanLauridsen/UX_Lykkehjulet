@@ -62,14 +62,14 @@ fun SpinScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row {
-                    StatefulPointsCounter(points = spinViewModel.points)
+                    Counter(precedingText = "Points", count = spinViewModel.points)
                     Spacer(modifier = Modifier.weight(1f))
-                    StatefulLivesCounter(lives = spinViewModel.lives)
+                    Counter(precedingText = "Lives", count = spinViewModel.lives)
                 }
+
                 Spacer(modifier = Modifier.padding(16.dp))
-                Text(text = spinViewModel.guessedWord.value)
 
-
+                Word(spinViewModel.guessedWord.value)
 
                 if (spinViewModel.controlPopup.value) {
                     SpinPopupScreen()
@@ -81,3 +81,33 @@ fun SpinScreen(
 
 }
 
+/**
+ * Stateless counter with [count] as the number to be displayed.
+ */
+@Composable
+fun Counter(
+    precedingText: String,
+    count: MutableState<Int>,
+) {
+    Card {
+        Text(
+            text = "$precedingText: ${count.value}",
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+/**
+ * Stateless display [text] as the word to guess.
+ */
+@Composable
+fun Word(text: String) {
+    OutlinedCard {
+        //TODO use monospaced font to avoid Card resizing when guessing a correct letter
+        Text(
+            text = text,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
