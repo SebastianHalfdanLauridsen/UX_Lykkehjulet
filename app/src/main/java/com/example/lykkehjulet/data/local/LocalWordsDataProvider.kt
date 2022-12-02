@@ -7,62 +7,62 @@ object LocalWordsDataProvider {
 
     private val allWords = listOf(
         Word(
-            id = 1L,
+            id = 0L,
             category = Category.ANIMAL,
             word = "Lion"
         ),
         Word(
-            id = 2L,
+            id = 1L,
             category = Category.ANIMAL,
             word = "Pigeon"
         ),
         Word(
-            id = 3L,
+            id = 2L,
             category = Category.ANIMAL,
             word = "Snail"
         ),
         Word(
-            id = 4L,
+            id = 3L,
             category = Category.FOOD,
             word = "Lasagne"
         ),
         Word(
-            id = 5L,
+            id = 4L,
             category = Category.FOOD,
-            word = "Roast pork brown gravy and potatoes"
+            word = "Spaghetti"
         ),
         Word(
-            id = 6L,
+            id = 5L,
             category = Category.FOOD,
             word = "Sausage"
         ),
         Word(
-            id = 7L,
+            id = 6L,
             category = Category.SPORT,
             word = "Badminton"
         ),
         Word(
-            id = 8L,
+            id = 7L,
             category = Category.SPORT,
             word = "Golf"
         ),
         Word(
-            id = 9L,
+            id = 8L,
             category = Category.SPORT,
-            word = "Paddle-ton"
+            word = "Cricket"
         ),
         Word(
-            id = 10L,
+            id = 9L,
             category = Category.TECHNOLOGY,
             word = "Television"
         ),
         Word(
-            id = 11L,
+            id = 10L,
             category = Category.TECHNOLOGY,
-            word = "Central processing unit"
+            word = "Motherboard"
         ),
         Word(
-            id = 12L,
+            id = 11L,
             category = Category.TECHNOLOGY,
             word = "Electricity"
         ),
@@ -70,5 +70,9 @@ object LocalWordsDataProvider {
 
     fun getWordById(id: Long): Word {
         return allWords.first { it.id == id }
+    }
+
+    fun getSize(): Int {
+        return allWords.size
     }
 }
