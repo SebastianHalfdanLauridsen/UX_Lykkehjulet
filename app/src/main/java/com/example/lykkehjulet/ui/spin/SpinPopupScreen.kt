@@ -13,11 +13,9 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
+fun SpinPopupScreen(spinViewModel: SpinViewModel = viewModel()) {
 
-    val points = spinViewModel.points.value
     // Inspired from https://medium.com/mobile-app-development-publication/jetpack-compose-popup-master-it-98accb23da36
     Popup(
         alignment = Alignment.Center,
@@ -42,53 +40,19 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                 Text(text = "You spun the wheel and got ${spinViewModel.selectedPoints.value} points. You may now guess a letter!")
                 Spacer(modifier = Modifier.weight(2F))
 
-                var guessedLetter by remember { mutableStateOf("") }
-                var guessedLetterIsChar by remember { mutableStateOf(false) }
-                var guessedLetterIsLetter by remember { mutableStateOf(false) }
-                var guessedLetterIsAlreadyGuessed by remember { mutableStateOf(false) }
-
-                var isButtonEnabled by remember { mutableStateOf(false) }
-
-                OutlinedTextField(
-                    value = guessedLetter,
-                    onValueChange = {
-                        guessedLetter = it
-
-                        guessedLetterIsChar = guessedLetter.length == 1
-                        guessedLetterIsLetter = guessedLetter.all { it.isLetter() }
-                        if (guessedLetter.isNotEmpty()) {
-                            guessedLetterIsAlreadyGuessed =
-                                spinViewModel.isLetterGuessed(guessedLetter.toCharArray()[0])
-                        }
-
-                        isButtonEnabled = guessedLetterIsChar && guessedLetterIsLetter
-                                    && !guessedLetterIsAlreadyGuessed
-                    },
-                    label = { Text(text = "Guessed letter") },
-                    singleLine = true,
-                    isError = !guessedLetterIsChar
-                            || !guessedLetterIsLetter || guessedLetterIsAlreadyGuessed,
-                    supportingText = {
-                        if (!guessedLetterIsChar) {
-                            Text(text = "Enter only a single character")
-                        } else if (!guessedLetterIsLetter) {
-                            Text(text = "Character is not a letter")
-                        } else if (guessedLetterIsAlreadyGuessed) {
-                            Text("Letter is already guessed")
-                        } else {
-                            Text(text = "Enter a single character")
-                        }
-                    },
-                    //TODO add imePadding() variant?
+                GetLetterInput(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    spinViewModel = spinViewModel,
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 FilledTonalButton(
                     onClick = {
+                        val guessedLetter = spinViewModel.guessedLetter.value.toCharArray()[0]
+
                         if (spinViewModel.isLetterCorrect(guessedLetter)) {
-                            spinViewModel.revealLetter(guessedLetter.toCharArray()[0])
+                            spinViewModel.revealLetter(guessedLetter)
                             spinViewModel.addPoints(spinViewModel.selectedPoints.value)
 
                             println("Word comp: ${spinViewModel.guessedWord.value} | ${spinViewModel.wordToGuess.value}")
@@ -106,16 +70,62 @@ fun PopupSpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                                 println("LOSER")
                             }
                         }
-                        spinViewModel.saveGuessedLetter(guessedLetter.toCharArray()[0])
+                        spinViewModel.saveGuessedLetter(guessedLetter)
+                        spinViewModel.resetGuessedLetter()
                         spinViewModel.closePopup()
                     },
-                    enabled = isButtonEnabled,
+                    enabled = spinViewModel.isPopupScreenButtonEnabled.value,
                     modifier = Modifier.fillMaxWidth(1f)
                 ) {
                     Text(text = "Guess letter")
                 }
             }
         }
-
     }
+}
+
+/**
+ *
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GetLetterInput(modifier: Modifier = Modifier, spinViewModel: SpinViewModel = viewModel()) {
+    var guessedLetterIsChar by remember { mutableStateOf(false) }
+    var guessedLetterIsLetter by remember { mutableStateOf(false) }
+    var guessedLetterIsAlreadyGuessed by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = spinViewModel.guessedLetter.value,
+        onValueChange = {
+            spinViewModel.guessedLetterChange(it)
+
+            guessedLetterIsChar = spinViewModel.guessedLetter.value.length == 1
+            guessedLetterIsLetter = spinViewModel.guessedLetter.value.all { it.isLetter() }
+            if (spinViewModel.guessedLetter.value.isNotEmpty()) {
+                guessedLetterIsAlreadyGuessed =
+                    spinViewModel.isLetterGuessed(spinViewModel.guessedLetter.value.toCharArray()[0])
+            }
+
+            spinViewModel.setIsPopupScreenButtonEnabled(
+                guessedLetterIsChar && guessedLetterIsLetter
+                        && !guessedLetterIsAlreadyGuessed
+            )
+        },
+        label = { Text(text = "Guessed letter") },
+        singleLine = true,
+        isError = !guessedLetterIsChar
+                || !guessedLetterIsLetter || guessedLetterIsAlreadyGuessed,
+        supportingText = {
+            if (!guessedLetterIsChar) {
+                Text(text = "Enter only a single character")
+            } else if (!guessedLetterIsLetter) {
+                Text(text = "Character is not a letter")
+            } else if (guessedLetterIsAlreadyGuessed) {
+                Text("Letter is already guessed")
+            } else {
+                Text(text = "Enter a single character")
+            }
+        },
+        modifier = modifier
+    )
 }

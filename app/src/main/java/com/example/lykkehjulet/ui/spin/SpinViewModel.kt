@@ -43,6 +43,10 @@ class SpinViewModel : ViewModel() {
     val selectedPoints: MutableState<Int>
         get() = _selectedPoints
 
+    private val _isPopupScreenButtonEnabled = mutableStateOf(false)
+    val isPopupScreenButtonEnabled: MutableState<Boolean>
+        get() = _isPopupScreenButtonEnabled
+
     //only these functions can modify the lives and points
     fun decreaseLives() {
         _lives.value--
@@ -64,7 +68,7 @@ class SpinViewModel : ViewModel() {
         _guessedLetter.value = letter
     }
 
-    fun isLetterCorrect(letter: String): Boolean {
+    fun isLetterCorrect(letter: Char): Boolean {
         return _wordToGuess.value.contains(letter, ignoreCase = true)
     }
 
@@ -102,5 +106,13 @@ class SpinViewModel : ViewModel() {
 
     fun isWordGuessed(): Boolean {
         return _wordToGuess.value == _guessedWord.value
+    }
+
+    fun setIsPopupScreenButtonEnabled(isEnabled: Boolean) {
+        _isPopupScreenButtonEnabled.value = isEnabled
+    }
+
+    fun resetGuessedLetter() {
+        _guessedLetter.value = ""
     }
 }

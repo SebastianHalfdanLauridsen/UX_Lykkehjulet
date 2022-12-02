@@ -72,7 +72,7 @@ fun SpinScreen(
 
 
                 if (spinViewModel.controlPopup.value) {
-                    PopupSpinScreen()
+                    SpinPopupScreen()
                 }
             }
 
