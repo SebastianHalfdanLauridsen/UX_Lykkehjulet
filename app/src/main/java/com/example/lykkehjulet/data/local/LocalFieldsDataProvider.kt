@@ -10,7 +10,12 @@ import com.example.lykkehjulet.data.field.fieldtypes.PointsField
  */
 object LocalFieldsDataProvider {
 
-    val allWheelFields = listOf(
+    private val allWheelFields = listOf(
+        Field(
+            id = 0L,
+            type = PointsField(points = 500),
+            color = Color(0xFFFFFF00)
+        ),
         Field(
             id = 1L,
             type = BankruptcyField(),
@@ -115,11 +120,6 @@ object LocalFieldsDataProvider {
             id = 21L,
             type = PointsField(points = 800),
             color = Color(0xFFFE0000)
-        ),
-        Field(
-            id = 22L,
-            type = PointsField(points = 500),
-            color = Color(0xFFFFFF00)
         )
     )
 
