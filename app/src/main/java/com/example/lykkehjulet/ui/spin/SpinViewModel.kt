@@ -80,7 +80,7 @@ class SpinViewModel : ViewModel() {
         _controlPopup.value = true
     }
 
-    fun guessedLetterChange(letter: String) {
+    fun changeGuessedLetters(letter: String) {
         _guessedLetter.value = letter
     }
 
@@ -112,7 +112,7 @@ class SpinViewModel : ViewModel() {
     }
 
     fun addPoints(amount: Int) {
-        //counts number of letters were correct
+        //counts the number of correct letters
         val multiplier = _wordToGuess.value.word.count {it == _guessedLetter.value.toCharArray()[0]}
         _points.value += (amount*multiplier)
     }
@@ -144,7 +144,7 @@ class SpinViewModel : ViewModel() {
     fun resetGame() {
         resetPoints()
         resetLives()
-        resetAlreadyGuessedLetters()
+        clearAlreadyGuessedLetters()
         fetchNewWord()
     }
 
@@ -156,7 +156,7 @@ class SpinViewModel : ViewModel() {
         _points.value = 0
     }
 
-    fun resetAlreadyGuessedLetters() {
+    private fun clearAlreadyGuessedLetters() {
         _alreadyGuessedLetters.clear()
     }
 
@@ -176,14 +176,11 @@ class SpinViewModel : ViewModel() {
 
     private fun resetGuessedWord() {
         _guessedWord.value = ""
-        println("GW: ${_guessedWord.value}")
-        println("WTG: ${_wordToGuess.value.word}")
 
         for ((i, _) in _wordToGuess.value.word.withIndex()) {
             _guessedWord.value = (_guessedWord.value + hiddenChar)
         }
-        println("GW: ${_guessedWord.value}")
-        println("WTG: ${_wordToGuess.value.word}")
+        println("Word to guess: ${_wordToGuess.value.word}")
     }
 
     fun getGuessedWordCategory(): String {

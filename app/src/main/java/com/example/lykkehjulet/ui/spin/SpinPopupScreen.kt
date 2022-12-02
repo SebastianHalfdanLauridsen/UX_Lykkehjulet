@@ -91,7 +91,7 @@ fun GetLetterInput(modifier: Modifier = Modifier, spinViewModel: SpinViewModel =
     OutlinedTextField(
         value = spinViewModel.guessedLetter.value,
         onValueChange = {
-            spinViewModel.guessedLetterChange(it)
+            spinViewModel.changeGuessedLetters(it)
 
             guessedLetterIsChar = spinViewModel.guessedLetter.value.length == 1
             guessedLetterIsLetter = spinViewModel.guessedLetter.value.all { it.isLetter() }
