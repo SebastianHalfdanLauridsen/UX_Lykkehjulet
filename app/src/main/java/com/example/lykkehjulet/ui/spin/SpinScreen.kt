@@ -56,11 +56,65 @@ fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {
                 if (spinViewModel.controlPopup.value) {
                     SpinPopupScreen()
                 }
-            }
 
+                if (spinViewModel.openEndDialog.value) {
+                    if (spinViewModel.hasLost()) {
+                        EndDialog(
+                            onDismissRequest = {spinViewModel.closeEndGameDialog()},
+                            title = "You lost!",
+                            text = "The word was '${spinViewModel.wordToGuess.value.word}! You lost in ${spinViewModel.alreadyGuessedLetters.size} guesses.",
+                            onConfirm = {
+                                spinViewModel.resetGame()
+                                spinViewModel.closeEndGameDialog()
+                            }
+                        )
+                    } else {
+                        EndDialog(
+                            onDismissRequest = { spinViewModel.closeEndGameDialog() },
+                            title = "You won!",
+                            text = "You guessed the word '${spinViewModel.wordToGuess.value.word}' in ${spinViewModel.alreadyGuessedLetters.size} guesses.",
+                            onConfirm = {
+                                spinViewModel.resetGame()
+                                spinViewModel.closeEndGameDialog()
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
+}
 
+/**
+ * Stateless AlertDialog to announce winner or loser of the game and enables the user to restart the game
+ */
+@Composable
+fun EndDialog(
+    onDismissRequest: () -> Unit,
+    title: String,
+    text: String,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        icon = {},
+        onDismissRequest = onDismissRequest,
+        title = { Text(text = title) },
+        text = { Text(text = text) },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text("Reset game")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismissRequest
+            ) {
+                Text("Dismiss")
+            }
+        }
+    )
 }
 
 /**

@@ -13,6 +13,7 @@ import com.example.lykkehjulet.data.word.Word
  */
 class SpinViewModel : ViewModel() {
     private val startingLives = 5
+    private val hiddenChar = '*'
 
     private val _points = mutableStateOf(0)
     val points: MutableState<Int>
@@ -57,13 +58,14 @@ class SpinViewModel : ViewModel() {
     val isPopupScreenButtonEnabled: MutableState<Boolean>
         get() = _isPopupScreenButtonEnabled
 
+    private val _openEndDialog = mutableStateOf(false)
+    val openEndDialog: MutableState<Boolean>
+        get() = _openEndDialog
+
+
     //only these functions can modify the lives and points
     fun decreaseLives() {
         _lives.value--
-    }
-
-    fun resetLives() {
-        _lives.value = startingLives
     }
 
     fun closePopup() {
@@ -79,12 +81,12 @@ class SpinViewModel : ViewModel() {
     }
 
     fun isLetterCorrect(letter: Char): Boolean {
-        return _wordToGuess.value.contains(letter, ignoreCase = true)
+        return _wordToGuess.value.word.contains(letter, ignoreCase = true)
     }
 
     fun revealLetter(guessedLetter: Char) {
-        _wordToGuess.value.withIndex().forEach { (i, letter) ->
-            if (letter == guessedLetter.uppercaseChar()) {
+        _wordToGuess.value.word.withIndex().forEach { (i, letter) ->
+            if (letter.uppercaseChar() == guessedLetter.uppercaseChar()) {
                 // inspired by https://www.techiedelight.com/replace-character-specific-index-string-kotlin/
                 //replaces index with letter
                 _guessedWord.value =
@@ -106,16 +108,13 @@ class SpinViewModel : ViewModel() {
     }
 
     fun addPoints(amount: Int) {
-        //TODO check if there are multiple letters
-        _points.value += amount
-    }
-
-    fun resetPoints() {
-        _points.value = 0
+        //counts number of letters were correct
+        val multiplier = _wordToGuess.value.word.count {it == _guessedLetter.value.toCharArray()[0]}
+        _points.value += (amount*multiplier)
     }
 
     fun isWordGuessed(): Boolean {
-        return _wordToGuess.value == _guessedWord.value
+        return _wordToGuess.value.word == _guessedWord.value
     }
 
     fun setIsPopupScreenButtonEnabled(isEnabled: Boolean) {
@@ -125,4 +124,66 @@ class SpinViewModel : ViewModel() {
     fun resetGuessedLetter() {
         _guessedLetter.value = ""
     }
+
+    fun openEndGameDialog() {
+        _openEndDialog.value = true
+    }
+
+    fun closeEndGameDialog() {
+        _openEndDialog.value = false
+    }
+
+    fun hasLost(): Boolean {
+        return _lives.value == 0
+    }
+
+    fun resetGame() {
+        resetPoints()
+        resetLives()
+        resetAlreadyGuessedLetters()
+        fetchNewWord()
+    }
+
+    private fun resetLives() {
+        _lives.value = startingLives
+    }
+
+    fun resetPoints() {
+        _points.value = 0
+    }
+
+    fun resetAlreadyGuessedLetters() {
+        _alreadyGuessedLetters.clear()
+    }
+
+    fun fetchNewWord() {
+        _wordToGuess.value = getNewWord()
+        resetGuessedWord()
+    }
+
+    /**
+     * Returns a new word from the [LocalWordsDataProvider]
+     */
+    private fun getNewWord(): Word {
+        return LocalWordsDataProvider.getWordById(
+            (0..LocalWordsDataProvider.getSize()).random().toLong()
+        )
+    }
+
+    private fun resetGuessedWord() {
+        _guessedWord.value = ""
+        println("GW: ${_guessedWord.value}")
+        println("WTG: ${_wordToGuess.value.word}")
+
+        for ((i, _) in _wordToGuess.value.word.withIndex()) {
+            _guessedWord.value = (_guessedWord.value + hiddenChar)
+        }
+        println("GW: ${_guessedWord.value}")
+        println("WTG: ${_wordToGuess.value.word}")
+    }
+
+    fun getGuessedWordCategory(): String {
+        return _wordToGuess.value.category.toString()
+    }
+
 }

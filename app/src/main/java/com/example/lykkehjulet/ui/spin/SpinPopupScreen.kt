@@ -55,15 +55,13 @@ fun SpinPopupScreen(spinViewModel: SpinViewModel = viewModel()) {
                             spinViewModel.addPoints(spinViewModel.selectedPoints.value)
 
                             if (spinViewModel.isWordGuessed()) {
-                                //TODO announce win and restart game
-                                println("WINNER")
+                                spinViewModel.openEndGameDialog()
                             }
                         } else {
                             spinViewModel.decreaseLives()
 
-                            if (spinViewModel.lives.value == 0) {
-                                //TODO announce defeat and restart game
-                                println("LOSER")
+                            if (spinViewModel.hasLost()) {
+                                spinViewModel.openEndGameDialog()
                             }
                         }
                         spinViewModel.saveGuessedLetter(guessedLetter)
