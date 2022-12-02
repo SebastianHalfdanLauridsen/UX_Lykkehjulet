@@ -3,6 +3,9 @@ package com.example.lykkehjulet.data.local
 import com.example.lykkehjulet.data.word.Category
 import com.example.lykkehjulet.data.word.Word
 
+/**
+ * Static data store of [Word]s
+ */
 object LocalWordsDataProvider {
 
     private val allWords = listOf(

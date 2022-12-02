@@ -27,6 +27,9 @@ class SpinViewModel : ViewModel() {
     val guessedWord: MutableState<String>
         get() = _guessedWord
 
+    /**
+     * Initial word as setup
+     */
     private val _wordToGuess =
         mutableStateOf(
             Word(
@@ -84,10 +87,16 @@ class SpinViewModel : ViewModel() {
         _guessedLetter.value = letter
     }
 
+    /**
+     * Determines if the [letter] is in the [wordToGuess]
+     */
     fun isLetterCorrect(letter: Char): Boolean {
         return _wordToGuess.value.word.contains(letter, ignoreCase = true)
     }
 
+    /**
+     * Replaces the [hiddenChar] with the [guessedLetter] in all correct places
+     */
     fun revealLetter(guessedLetter: Char) {
         _wordToGuess.value.word.withIndex().forEach { (i, letter) ->
             if (letter.uppercaseChar() == guessedLetter.uppercaseChar()) {
@@ -99,10 +108,16 @@ class SpinViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Determines if the [letter] is in the [alreadyGuessedLetters]
+     */
     fun isLetterGuessed(letter: Char): Boolean {
         return letter.uppercaseChar() in _alreadyGuessedLetters
     }
 
+    /**
+     * Appends the [guessedLetter] to the list of [alreadyGuessedLetters]
+     */
     fun saveGuessedLetter(guessedLetter: Char) {
         _alreadyGuessedLetters.add(guessedLetter.uppercaseChar())
     }
@@ -111,6 +126,9 @@ class SpinViewModel : ViewModel() {
         _selectedPoints.value = points
     }
 
+    /**
+     * Adds an [amount] of points multiplied by the number of instances of the guessed letter
+     */
     fun addPoints(amount: Int) {
         //counts the number of correct letters
         val multiplier = _wordToGuess.value.word.count {it == _guessedLetter.value.toCharArray()[0]}
@@ -160,6 +178,9 @@ class SpinViewModel : ViewModel() {
         _alreadyGuessedLetters.clear()
     }
 
+    /**
+     * Retrieves a new word and resets the guessed word
+     */
     fun fetchNewWord() {
         _wordToGuess.value = getNewWord()
         resetGuessedWord()
@@ -174,6 +195,9 @@ class SpinViewModel : ViewModel() {
         )
     }
 
+    /**
+     * Resets the guessed word by making it match the [wordToGuess] with [hiddenChar]s
+     */
     private fun resetGuessedWord() {
         _guessedWord.value = ""
 

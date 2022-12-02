@@ -14,6 +14,11 @@ import com.example.lykkehjulet.data.local.LocalFieldsDataProvider
 import com.example.lykkehjulet.ui.navigation.LykkeHjulFAB
 import com.example.lykkehjulet.ui.navigation.LykkeHjulTopBar
 
+
+/**
+ * The main screen where the points, lives and word is displayed to the user
+ * with buttons to reset game and spin the wheel
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinScreen(spinViewModel: SpinViewModel = viewModel()) {

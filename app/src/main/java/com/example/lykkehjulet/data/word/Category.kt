@@ -1,5 +1,8 @@
 package com.example.lykkehjulet.data.word
 
+/**
+ * The different possible word categories
+ */
 enum class Category {
     DEFAULT {
         override fun toString(): String {
